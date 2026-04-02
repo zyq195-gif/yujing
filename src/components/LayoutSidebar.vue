@@ -8,70 +8,81 @@
         :class="['nav-item', { active: activeId === item.id }]"
         @click="$emit('navigate', item.id)"
       >
-        {{ item.name }}
+        <span class="icon">
+          <i :class="item.icon"></i> </span>
+        <span class="name">{{ item.name }}</span>
       </div>
     </nav>
   </aside>
 </template>
 
 <script setup>
+import '@fortawesome/fontawesome-free/css/all.css'; // 引入图标库，如 FontAwesome
+
 defineProps(['activeId']);
 defineEmits(['navigate']);
 
 const navItems = [
-  { id: 'dashboard', name: '滑坡预警综合看板' },
-  { id: 'workorder', name: '风险闭环管理' },
-  { id: 'decision', name: '智能决策与专家库' },
-  { id: 'emergency', name: '应急预案与指挥' },
-  { id: 'linkage', name: '联动模块与设备控制' },
-  { id: 'evaluation', name: '效能评估与报表' }
+  { id: 'dashboard', name: '滑坡预警综合看板', icon: 'fas fa-chart-line' },
+  { id: 'workorder', name: '风险闭环管理', icon: 'fas fa-tasks' },
+  { id: 'decision', name: '智能决策与专家库', icon: 'fas fa-brain' },
+  { id: 'emergency', name: '应急预案与指挥', icon: 'fas fa-headset' },
+  { id: 'linkage', name: '联动模块与设备控制', icon: 'fas fa-cogs' },
+  { id: 'evaluation', name: '效能评估与报表', icon: 'fas fa-file-contract' }
 ];
 </script>
 
 <style scoped>
 .sidebar-container {
-  width: 220px;
-  background: rgba(255, 255, 255, 0.4);
-  border-right: 1px solid rgba(225, 233, 241, 0.8);
-  backdrop-filter: blur(10px);
+  width: 260px; /* 1. 增加宽度，更稳重 */
+  background: rgba(255, 255, 255, 0.92); /* 2. 降低透明度，更扎实 */
+  border-right: 1px solid rgba(225, 233, 241, 1);
+  backdrop-filter: blur(8px);
   display: flex;
   flex-direction: column;
 }
 
 .side-nav-header {
-  padding: 16px 20px;
-  font-size: 14px;
-  font-weight: bold;
-  color: #030303;
-  margin-bottom: 8px;
-}
-
-/* 核心修改：参照 style.css 增加了 border-left 和 background */
-.side-nav-header {
-  padding: 12px 20px;
-  font-size: 14px;
-  font-weight: bold;
-  color: #030303;
-  border-left: 4px solid #1c3d90; /* 深蓝色左边框 */
-  background: rgba(248, 251, 255, 0.3); /* 浅色半透明背景 */
-  margin-bottom: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* 核心修改 1：将顶边距加大到 32px，底边距缩小到 16px，利用内外边距的差值将文字整体向下推 */
+  padding: 32px 20px 16px;
+  font-size: 19px;
+  font-weight: 900;
+  color: #1c3d90;
+  letter-spacing: 1.5px;
+  margin-bottom: 15px;
+  background: transparent;
+  /* 核心修改 2：将底边框的宽度从 1px 加粗到 2px，让分界线更明显 */
+  border-bottom: 2px solid rgba(225, 233, 241, 1);
 }
 
 .nav-list {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 8px; /* 4. 增加项间距，呼吸感 */
 }
 
-/* 基础样式：无图标 */
+/* 5. 导航项：调整布局、去掉外边距 */
 .nav-item {
-  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 24px;
   font-size: 14px;
   color: #333;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  margin: 0 12px;
-  border-radius: 4px;
+  border-left: 4px solid transparent; /* 6. 预留左指示条空间 */
+  /* margin: 0 12px;  <- 移除外边距 */
+}
+
+/* 7. 图标样式 */
+.icon {
+  font-size: 16px;
+  width: 24px; /* 固定图标区域宽度 */
+  text-align: center;
 }
 
 /* 悬浮样式：浅蓝背景 */
@@ -80,12 +91,11 @@ const navItems = [
   color: #1c3d90;
 }
 
-/* 选中样式：深蓝渐变高亮 + 左侧条 */
+/* 选中样式：深蓝渐变高亮 + 左指示条 */
 .nav-item.active {
-  background: linear-gradient(to right, #C3E4FD, #D6EDFE);
+  background: linear-gradient(to right, #C3E4FD 20%, #D6EDFE 100%); /* 渐变范围 */
   color: #1c3d90;
   font-weight: bold;
-  border-left: 4px solid #1c3d90; /* 截图中的深蓝左指示条 */
-  padding-left: 20px; /* 补偿边框宽度 */
+  border-left-color: #1c3d90;
 }
 </style>
