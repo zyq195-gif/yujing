@@ -27,7 +27,7 @@
       </div>
     </section>
 
-    <section class="section-container">
+    <section class="section-container config-section">
       <div class="section-header">
         <h3>预警参数设置</h3>
       </div>
@@ -100,57 +100,60 @@
 </template>
 
 <style scoped>
-.view-page { padding: 20px; background: #f0f2f5; min-height: 100vh; }
-.page-title { margin-bottom: 25px; color: #1c3d90; font-weight: bold; border-left: 4px solid #1c3d90; padding-left: 15px; }
+/* 核心修改：使用 calc(100vh - 60px) 避开系统顶部导航栏的高度，极致压缩内边距 */
+.view-page { padding: 15px; background: #f0f2f5; height: 100%; max-height: calc(100vh - 60px); box-sizing: border-box; overflow: hidden; display: flex; flex-direction: column; }
+.page-title { margin-top: 0; margin-bottom: 15px; color: #1c3d90; font-weight: bold; border-left: 4px solid #1c3d90; padding-left: 10px; font-size: 18px; }
 
-.section-container { margin-bottom: 30px; }
-.section-header { margin-bottom: 15px; display: flex; align-items: baseline; gap: 15px; }
-.section-header h3 { font-size: 18px; color: #333; }
-.subtitle { font-size: 13px; color: #666; }
+.section-container { margin-bottom: 15px; }
+/* 底部容器：吸收剩余高度，并加 min-height: 0 避免内容过载撑破盒子 */
+.config-section { flex: 1; display: flex; flex-direction: column; margin-bottom: 0; min-height: 0; }
+.section-header { margin-bottom: 10px; display: flex; align-items: baseline; gap: 15px; }
+.section-header h3 { font-size: 16px; color: #333; margin: 0; }
+.subtitle { font-size: 12px; color: #666; }
 
 /* KPI 样式 */
-.kpi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-.kpi-card { padding: 20px; text-align: center; border-top: 3px solid #1c3d90; }
-.kpi-card h4 { font-size: 14px; color: #666; margin-bottom: 10px; }
-.kpi-value { font-size: 32px; font-weight: bold; color: #1c3d90; }
-.kpi-value .unit { font-size: 16px; font-weight: normal; }
-.kpi-detail { margin-top: 10px; font-size: 12px; color: #999; }
+.kpi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+.kpi-card { padding: 12px 15px; text-align: center; border-top: 3px solid #1c3d90; background: #fff; border-radius: 4px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); }
+.kpi-card h4 { font-size: 13px; color: #666; margin-bottom: 5px; margin-top: 0; }
+.kpi-value { font-size: 26px; font-weight: bold; color: #1c3d90; }
+.kpi-value .unit { font-size: 14px; font-weight: normal; }
+.kpi-detail { margin-top: 5px; font-size: 12px; color: #999; }
 
-/* 配置表单样式 */
-.config-form { display: flex; flex-direction: column; gap: 15px; max-width: 900px; margin: 0 auto; }
-.config-card { padding: 20px; }
-.card-title { font-weight: bold; color: #1c3d90; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #f0f0f0; padding-bottom: 10px; }
+/* 底部配置网格：横向排列三个卡片 */
+.config-form { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; width: 100%; flex: 1; min-height: 0; }
+.config-card { padding: 12px 15px; background: #fff; border-radius: 4px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); display: flex; flex-direction: column; }
+.card-title { font-size: 14px; font-weight: bold; color: #1c3d90; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; border-bottom: 1px solid #f0f0f0; padding-bottom: 8px; margin-top: 0; }
 
-.form-item { margin-bottom: 15px; }
-.form-item label { display: block; font-size: 14px; margin-bottom: 8px; color: #333; font-weight: 500; }
-.form-tip { font-size: 12px; color: #999; margin-top: 6px; }
+.form-item { margin-bottom: 10px; }
+.form-item label { display: block; font-size: 13px; margin-bottom: 4px; color: #333; font-weight: 500; }
+.form-tip { font-size: 12px; color: #999; margin-top: 4px; margin-bottom: 0; }
 .form-tip.warning { color: #f39c12; }
 
-/* 输入控件 */
+/* 输入控件缩放 */
 .input-with-unit { position: relative; width: 100%; }
-.input-with-unit input, .full-width { width: 100%; padding: 10px; border: 1px solid #d9d9d9; border-radius: 4px; }
-.unit-tag { position: absolute; right: 10px; top: 10px; color: #999; }
+.input-with-unit input, .full-width { width: 100%; padding: 6px 10px; border: 1px solid #d9d9d9; border-radius: 4px; box-sizing: border-box; font-size: 13px; }
+.unit-tag { position: absolute; right: 10px; top: 7px; color: #999; font-size: 13px;}
 
-.dynamic-row { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; }
-.dynamic-config-box { background: #f9f9f9; padding: 15px; border-radius: 4px; display: flex; align-items: center; gap: 10px; font-size: 13px; margin-top: 10px; border: 1px dashed #ddd; }
-.mini-input { width: 60px; padding: 5px; text-align: center; }
-.short-input { width: 120px; padding: 5px; }
+.dynamic-row { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
+.dynamic-config-box { background: #f9f9f9; padding: 8px 10px; border-radius: 4px; display: flex; align-items: center; gap: 6px; font-size: 12px; margin-top: 8px; border: 1px dashed #ddd; flex-wrap: wrap; }
+.mini-input { width: 45px; padding: 3px; text-align: center; border: 1px solid #d9d9d9; border-radius: 4px; font-size: 12px;}
+.short-input { width: 90px; padding: 3px; border: 1px solid #d9d9d9; border-radius: 4px; font-size: 12px;}
 
 /* 滑块样式 */
-.slider-container { display: flex; align-items: center; gap: 15px; margin-top: 15px; }
+.slider-container { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
 .slider-container input { flex: 1; accent-color: #1c3d90; }
-.slider-label { font-size: 12px; color: #666; }
+.slider-label { font-size: 12px; color: #666; white-space: nowrap; }
 
-/* 开关样式 */
+/* 开关样式缩放 */
 .switch-control input { display: none; }
-.switch-control label { width: 44px; height: 22px; background: #ccc; display: block; border-radius: 11px; position: relative; cursor: pointer; }
-.switch-control label::after { content: ''; width: 18px; height: 18px; background: #fff; border-radius: 50%; position: absolute; top: 2px; left: 2px; transition: 0.3s; }
+.switch-control label { width: 36px; height: 18px; background: #ccc; display: block; border-radius: 9px; position: relative; cursor: pointer; }
+.switch-control label::after { content: ''; width: 14px; height: 14px; background: #fff; border-radius: 50%; position: absolute; top: 2px; left: 2px; transition: 0.3s; }
 .switch-control input:checked + label { background: #1c3d90; }
-.switch-control input:checked + label::after { left: 24px; }
+.switch-control input:checked + label::after { left: 20px; }
 
-/* 按钮组 */
-.form-actions { display: flex; justify-content: flex-end; gap: 12px; margin-top: 10px; }
-.btn-primary { background: #1c3d90; color: #fff; border: none; padding: 10px 25px; border-radius: 4px; cursor: pointer; }
-.btn-outline { background: #fff; color: #1c3d90; border: 1px solid #1c3d90; padding: 10px 25px; border-radius: 4px; cursor: pointer; }
-.btn-secondary { background: #eee; color: #666; border: none; padding: 10px 25px; border-radius: 4px; cursor: pointer; }
+/* 按钮组停靠在卡片最底部 */
+.form-actions { grid-column: 1 / -1; display: flex; justify-content: flex-end; gap: 10px; margin-top: auto; padding-top: 5px; }
+.btn-primary { background: #1c3d90; color: #fff; border: none; padding: 6px 20px; border-radius: 4px; cursor: pointer; font-size: 13px;}
+.btn-outline { background: #fff; color: #1c3d90; border: 1px solid #1c3d90; padding: 6px 20px; border-radius: 4px; cursor: pointer; font-size: 13px;}
+.btn-secondary { background: #eee; color: #666; border: none; padding: 6px 20px; border-radius: 4px; cursor: pointer; font-size: 13px;}
 </style>
